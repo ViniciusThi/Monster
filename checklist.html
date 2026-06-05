@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu Checklist Monster Energy</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fff;
+  color: #111;
+  padding: 16px 16px 80px;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 16px 0 14px;
+  border-bottom: 3px solid #111;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+header img.main-logo { height: 52px; object-fit: contain; }
+header div h1 { font-size: 1.7em; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; }
+header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 1px; }
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 20px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  page-break-inside: avoid;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-left: 6px solid var(--accent);
+  background: var(--light-bg);
+}
+.section-header .group-logo {
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.section-title {
+  font-size: 1.15em;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex: 1;
+}
+.section-count {
+  font-size: 0.85em;
+  color: #777;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ── GRID ── */
+.cans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  gap: 10px;
+  padding: 12px;
+  background: #fff;
+}
+
+/* ── CAN CARD ── */
+.can-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 6px 8px;
+  border-radius: 7px;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  user-select: none;
+  position: relative;
+}
+.can-card:hover { border-color: var(--accent); background: var(--light-bg); }
+.can-card.checked {
+  border-color: var(--accent);
+  background: var(--light-bg);
+}
+
+.can-card img {
+  height: 82px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.can-name {
+  font-size: 0.70em;
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* ── CHECKBOX SQUARE (para carimbar com caneta) ── */
+.cb-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  pointer-events: none;
+}
+.cb-box {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #444;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 900;
+  color: transparent;
+  flex-shrink: 0;
+  transition: color 0.12s;
+}
+.can-card.checked .cb-box { color: var(--accent); }
+.cb-label {
+  font-size: 0.68em;
+  color: #888;
+}
+.can-card.checked .cb-label { color: var(--accent); font-weight: 700; }
+
+/* ── EMPTY SECTION ── */
+.empty-note {
+  padding: 16px;
+  text-align: center;
+  color: #bbb;
+  font-size: 0.85em;
+  letter-spacing: 1px;
+  background: #fafafa;
+}
+
+/* ── SECTION THEMES ── */
+.g-original  { --accent: #009922; --light-bg: #f2fff4; }
+.g-ultra     { --accent: #666666; --light-bg: #f8f8f8; }
+.g-juice     { --accent: #dd7700; --light-bg: #fff8ee; }
+.g-java      { --accent: #7a4d10; --light-bg: #fff6ee; }
+.g-killer    { --accent: #bb1100; --light-bg: #fff3f2; }
+.g-reserve   { --accent: #004faa; --light-bg: #f0f5ff; }
+.g-dragon    { --accent: #006633; --light-bg: #f0fff6; }
+.g-vr46      { --accent: #bb8800; --light-bg: #fffbee; }
+.g-rehab     { --accent: #bb8800; --light-bg: #fefef0; }
+
+/* ── TOTAL BAR ── */
+.total-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  border-top: 2px solid #ccc;
+  padding: 9px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+}
+.total-label { color: #777; font-size: 0.82em; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.total-numbers { color: #009922; font-size: 1.35em; font-weight: 900; white-space: nowrap; letter-spacing: 1px; }
+.progress-outer {
+  flex: 1;
+  background: #eee;
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+}
+.progress-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #009922, #00cc33);
+  border-radius: 10px;
+  transition: width 0.35s ease;
+  width: 0%;
+}
+.btn-print {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 7px 14px;
+  font-size: 0.82em;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.btn-print:hover { background: #333; }
+
+/* ── PRINT ── */
+@media print {
+  @page { size: A4 portrait; margin: 0.7cm; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body { padding: 0 !important; background: #fff !important; }
+  .total-bar { display: none !important; }
+
+  header { border-bottom: 2px solid #000; margin-bottom: 12px; }
+  .section { margin-bottom: 12px; border: 1px solid #ccc; page-break-inside: avoid; }
+  .cans-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 6px;
+    padding: 8px;
+  }
+  .can-card { padding: 6px 4px 5px; }
+  .can-card img { height: 70px; }
+  .can-name { font-size: 0.62em; }
+  .cb-box { border-color: #222; }
+  .can-card.checked .cb-box { color: #000 !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <img class="main-logo" src="monster-logo.png" alt="Monster Energy">
+  <div>
+    <h1>Meu Checklist Monster</h1>
+    <p>Clique na lata (digital) · Marque com caneta (impresso)</p>
+  </div>
+</header>
+
+
+<!-- ══ MONSTER ENERGY ══ -->
+<div class="section g-original">
+  <div class="section-header">
+    <img class="group-logo" src="c591259d-f361-4415-a7cb-f558d09cd41d.webp" alt="">
+    <div class="section-title">Monster Energy</div>
+    <div class="section-count" id="cnt-original">0/13</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="o1" onclick="toggle(this)"><img src="f6dadd8b-12d1-4318-9167-1b83e9caa9c9.webp" alt=""><div class="can-name">Original (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o2" onclick="toggle(this)"><img src="c349088a-8299-4d18-a15c-a5bc13038f3a.webp" alt=""><div class="can-name">Original (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o3" onclick="toggle(this)"><img src="9b828d6d-ceaf-4b3d-8858-e62787de8372.webp" alt=""><div class="can-name">Original Mini (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o4" onclick="toggle(this)"><img src="9f180ff9-4af0-4f17-b0f0-574906dc6189.webp" alt=""><div class="can-name">Zero Sugar</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o5" onclick="toggle(this)"><img src="abaec732-ae43-481b-8942-71bcb2546725.webp" alt=""><div class="can-name">Zero Sugar (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o6" onclick="toggle(this)"><img src="cc9f9f57-967c-4d64-b539-f8bdabdd8f90.webp" alt=""><div class="can-name">Zero Sugar Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o7" onclick="toggle(this)"><img src="064e8dc2-792b-49db-8592-095d2cddecb5.webp" alt=""><div class="can-name">Absolutely Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o8" onclick="toggle(this)"><img src="3f8ba93e-6ec9-4ad5-80a3-49a267008905.webp" alt=""><div class="can-name">Strawberry Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o9" onclick="toggle(this)"><img src="96edacb8-96cf-4dac-ab53-5aa098d020aa.webp" alt=""><div class="can-name">Strawberry Shot Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o10" onclick="toggle(this)"><img src="80f7af64-6bf0-4169-a1b0-25bdbc320368.webp" alt=""><div class="can-name">Electric Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o11" onclick="toggle(this)"><img src="3aa3f7a7-64cb-4eaf-9db0-f7a45354626f.webp" alt=""><div class="can-name">Full Throttle Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o12" onclick="toggle(this)"><img src="637e8b02-7c99-468c-ab65-ab90cbd0ecfb.webp" alt=""><div class="can-name">Lando Norris Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o13" onclick="toggle(this)"><img src="c6dec565-3e6c-41e3-8a48-93d4809b005a.webp" alt=""><div class="can-name">Nitro Super Dry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ MONSTER ULTRA ══ -->
+<div class="section g-ultra">
+  <div class="section-header">
+    <img class="group-logo" src="7f555e29-ae37-4c90-a176-016a1efcc6c6.webp" alt="">
+    <div class="section-title">Monster Ultra</div>
+    <div class="section-count" id="cnt-ultra">0/12</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="u1" onclick="toggle(this)"><img src="3214808a-90a7-474d-9cc5-7f495eae23de.webp" alt=""><div class="can-name">Zero Ultra</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u2" onclick="toggle(this)"><img src="85b0a72e-82af-4b2e-abba-2ddfaa80e919.webp" alt=""><div class="can-name">Ultra (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u3" onclick="toggle(this)"><img src="57063625-73cc-46e3-b44d-d2b271182410.webp" alt=""><div class="can-name">Ultra Violet</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u4" onclick="toggle(this)"><img src="2fe8f57f-685c-498e-8f1a-627aa46cfe48.webp" alt=""><div class="can-name">Ultra Punk Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u5" onclick="toggle(this)"><img src="33fb96c4-82ed-4776-ae04-a521e53cbe3b.webp" alt=""><div class="can-name">Ultra Vice Guava</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u6" onclick="toggle(this)"><img src="60b7e3d6-f887-4a90-a36e-490a6e9c8d40.webp" alt=""><div class="can-name">Ultra Wild Passion</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u7" onclick="toggle(this)"><img src="f3cf4313-fb7c-418b-93ad-b17df387e3f9.webp" alt=""><div class="can-name">Ultra Blue Hawaiian</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u8" onclick="toggle(this)"><img src="b50fd57d-fb73-407c-9451-7e8769ff9d98.webp" alt=""><div class="can-name">Ultra R.W.B. Razz</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u9" onclick="toggle(this)"><img src="a78a390f-cfa2-40d7-9b7e-0923f15200a5.webp" alt=""><div class="can-name">Ultra Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u10" onclick="toggle(this)"><img src="e713f452-63a6-4a6f-9081-8d1c3678016c.webp" alt=""><div class="can-name">Ultra Peachy Keen</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u11" onclick="toggle(this)"><img src="ed90928a-7c0c-456f-80fd-d5c0cda7924c.webp" alt=""><div class="can-name">Ultra Fiesta Mango</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u12" onclick="toggle(this)"><img src="f6beef27-965c-4235-b48e-45fe1d45ba01.webp" alt=""><div class="can-name">Ultra Strawberry Dreams</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ JUICE MONSTER ══ -->
+<div class="section g-juice">
+  <div class="section-header">
+    <img class="group-logo" src="b2bc5d78-dcdd-4d4c-92f7-6fe8c3d03d14.webp" alt="">
+    <div class="section-title">Juice Monster</div>
+    <div class="section-count" id="cnt-juice">0/11</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="j1" onclick="toggle(this)"><img src="00caa0b5-426b-45a7-8e68-a7c7ef46e224.webp" alt=""><div class="can-name">Bad Apple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j2" onclick="toggle(this)"><img src="077196b8-3934-4aca-89c4-4826a4047c7c.webp" alt=""><div class="can-name">Pacific Punch (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j3" onclick="toggle(this)"><img src="dc1852bf-c745-4786-b048-d721401fbc7a.webp" alt=""><div class="can-name">Pacific Punch (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j4" onclick="toggle(this)"><img src="12d06861-08de-4db3-86a3-c64ba1949cac.webp" alt=""><div class="can-name">Strawberry Lemonade</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j5" onclick="toggle(this)"><img src="78a3ede8-6f73-4ffd-9b03-e77990be30b5.webp" alt=""><div class="can-name">Viking Berry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j6" onclick="toggle(this)"><img src="853f2d57-7852-4b73-bc0c-419a5fa9897a.webp" alt=""><div class="can-name">Voodoo Grape</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j7" onclick="toggle(this)"><img src="d9229f7a-7d32-4ad9-8ee8-df40b58cde7b.webp" alt=""><div class="can-name">Mango Loco (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j8" onclick="toggle(this)"><img src="c605dea9-8098-48a7-b910-c946f159041a.webp" alt=""><div class="can-name">Mango Loco (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j9" onclick="toggle(this)"><img src="4bb4d416-3bfc-41a0-a773-0cb627ddb357.webp" alt=""><div class="can-name">Pipeline Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j10" onclick="toggle(this)"><img src="a9a42852-2ce8-4da6-9808-9d09dd3b0486.webp" alt=""><div class="can-name">Khaotic</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j11" onclick="toggle(this)"><img src="8d7ce6c5-0f6f-4c59-9cc1-02be87b7dae6.webp" alt=""><div class="can-name">Rio Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ JAVA MONSTER ══ -->
+<div class="section g-java">
+  <div class="section-header">
+    <img class="group-logo" src="fdff6ead-fda5-4c7e-bb3f-be6af38b407f.webp" alt="" style="height:30px;">
+    <div class="section-title">Java Monster</div>
+    <div class="section-count" id="cnt-java">0/5</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="jv1" onclick="toggle(this)"><img src="1ab2af13-698a-4cbd-b066-1b97b0e53370.webp" alt=""><div class="can-name">Mean Bean</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv2" onclick="toggle(this)"><img src="6453e22e-627b-4ebc-9c3f-63a46d39d748.webp" alt=""><div class="can-name">Irish Creme</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv3" onclick="toggle(this)"><img src="9e69f70f-8efa-4a95-999d-9b6a9b0e37e8.webp" alt=""><div class="can-name">Café Latte</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv4" onclick="toggle(this)"><img src="ac2c0d32-97c7-4c48-8cca-269e43f22a42.webp" alt=""><div class="can-name">Salted Caramel</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv5" onclick="toggle(this)"><img src="b956c776-0858-4b8f-84e6-93c5c6f18f52.webp" alt=""><div class="can-name">Loca Moca</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ KILLER BREW ══ -->
+<div class="section g-killer">
+  <div class="section-header">
+    <img class="group-logo" src="fdff6ead-fda5-4c7e-bb3f-be6af38b407f.webp" alt="" style="height:28px; object-position: right center;">
+    <div class="section-title">Killer Brew</div>
+    <div class="section-count" id="cnt-killer">0/1</div>
+  </div>
+  <div class="cans-grid" style="grid-template-columns: repeat(auto-fill, minmax(108px, 160px));">
+    <div class="can-card" data-id="kb1" onclick="toggle(this)"><img src="4a1b2252-4a4c-4ab5-9f66-f7e50fb2b68f.webp" alt=""><div class="can-name">Loca Moca Triple Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ MONSTER RESERVE ══ -->
+<div class="section g-reserve">
+  <div class="section-header">
+    <img class="group-logo" src="monster-logo.png" alt="" style="filter: hue-rotate(200deg) saturate(1.5);">
+    <div class="section-title">Monster Reserve</div>
+    <div class="section-count" id="cnt-reserve">0/3</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="r1" onclick="toggle(this)"><img src="1ee44bba-ddba-4746-8853-47904a1244e3.webp" alt=""><div class="can-name">White Pineapple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="r2" onclick="toggle(this)"><img src="1f958231-848d-47b9-bc1a-07ec623d3046.webp" alt=""><div class="can-name">Orange Dreamsicle</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="r3" onclick="toggle(this)"><img src="8f574bbc-94d9-4dc5-a672-9ccfadb1cb14.webp" alt=""><div class="can-name">Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ DRAGON ICE TEA ══ -->
+<div class="section g-dragon">
+  <div class="section-header">
+    <img class="group-logo" src="monster-logo.png" alt="" style="filter: hue-rotate(100deg) saturate(1.2);">
+    <div class="section-title">Dragon Ice Tea</div>
+    <div class="section-count" id="cnt-dragon">0/2</div>
+  </div>
+  <div class="cans-grid">
+    <div class="can-card" data-id="dt1" onclick="toggle(this)"><img src="57464a16-b793-403d-8c6d-0f50dfeb2c47.webp" alt=""><div class="can-name">Dragon Peach</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="dt2" onclick="toggle(this)"><img src="a1089195-7e2f-4a42-a8de-37586e0333a2.webp" alt=""><div class="can-name">Dragon Lemon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ VR|46 ══ -->
+<div class="section g-vr46">
+  <div class="section-header">
+    <img class="group-logo" src="a2ba94a9-bb20-4078-95b4-57bbcf534a50.webp" alt="">
+    <div class="section-title">VR|46</div>
+    <div class="section-count" id="cnt-vr46">0/1</div>
+  </div>
+  <div class="cans-grid" style="grid-template-columns: repeat(auto-fill, minmax(108px, 160px));">
+    <div class="can-card" data-id="vr1" onclick="toggle(this)"><img src="fce2caa1-d334-49a4-9325-257e78484459.webp" alt=""><div class="can-name">The Doctor</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+  </div>
+</div>
+
+
+<!-- ══ REHAB MONSTER ══ -->
+<div class="section g-rehab">
+  <div class="section-header">
+    <img class="group-logo" src="c808166b-6e90-4164-898c-f65dd2a035a2.webp" alt="">
+    <div class="section-title">Rehab Monster</div>
+    <div class="section-count">—</div>
+  </div>
+  <div class="empty-note">Adicione imagens das latas quando tiver!</div>
+</div>
+
+
+<!-- ══ TOTAL BAR ══ -->
+<div class="total-bar">
+  <div class="total-label">Total</div>
+  <div class="total-numbers" id="total-display">0 / 48</div>
+  <div class="progress-outer">
+    <div class="progress-inner" id="prog-bar"></div>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+</div>
+
+
+<script>
+const TOTAL = 48;
+const KEY = 'monster_v2';
+
+const groups = [
+  { prefix: 'o',   total: 13, id: 'cnt-original' },
+  { prefix: 'u',   total: 12, id: 'cnt-ultra'    },
+  { prefix: 'j',   total: 11, id: 'cnt-juice'    },
+  { prefix: 'jv',  total: 5,  id: 'cnt-java'     },
+  { prefix: 'kb',  total: 1,  id: 'cnt-killer'   },
+  { prefix: 'r',   total: 3,  id: 'cnt-reserve'  },
+  { prefix: 'dt',  total: 2,  id: 'cnt-dragon'   },
+  { prefix: 'vr',  total: 1,  id: 'cnt-vr46'     },
+];
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+}
+function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
+
+function toggle(card) {
+  const id = card.dataset.id;
+  const s = load();
+  if (card.classList.contains('checked')) {
+    card.classList.remove('checked');
+    delete s[id];
+  } else {
+    card.classList.add('checked');
+    s[id] = true;
+  }
+  save(s);
+  updateAll();
+}
+
+function updateAll() {
+  let total = 0;
+  groups.forEach(g => {
+    let c = 0;
+    document.querySelectorAll(`[data-id^="${g.prefix}"]`).forEach(el => {
+      if (el.classList.contains('checked')) c++;
+    });
+    const el = document.getElementById(g.id);
+    if (el) el.textContent = `${c}/${g.total}`;
+    total += c;
+  });
+  document.getElementById('total-display').textContent = `${total} / ${TOTAL}`;
+  document.getElementById('prog-bar').style.width = `${(total / TOTAL) * 100}%`;
+}
+
+// Restore state
+(function init() {
+  const s = load();
+  Object.keys(s).forEach(id => {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (el) el.classList.add('checked');
+  });
+  updateAll();
+})();
+</script>
+</body>
+</html>
