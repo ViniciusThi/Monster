@@ -69,7 +69,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
 /* ── GRID ── */
 .cans-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
   gap: 10px;
   padding: 12px;
   background: #fff;
@@ -80,7 +80,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   padding: 10px 6px 8px;
   border-radius: 7px;
   background: #fff;
@@ -97,14 +97,14 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
 }
 
 .can-card img {
-  height: 82px;
+  height: 75px;
   width: auto;
   object-fit: contain;
   pointer-events: none;
 }
 
 .can-name {
-  font-size: 0.70em;
+  font-size: 0.68em;
   text-align: center;
   font-weight: 700;
   color: #333;
@@ -116,7 +116,24 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   pointer-events: none;
 }
 
-/* ── CHECKBOX SQUARE (para carimbar com caneta) ── */
+/* ── STAR RATING ── */
+.star-wrap {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.star {
+  font-size: 1.05em;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+  pointer-events: all;
+}
+.star:hover { transform: scale(1.2); }
+.star.filled { color: var(--accent, #009922); }
+
+/* ── CHECKBOX SQUARE ── */
 .cb-wrap {
   display: flex;
   align-items: center;
@@ -144,6 +161,107 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   color: #888;
 }
 .can-card.checked .cb-label { color: var(--accent); font-weight: 700; }
+
+/* ── NOTES BUTTON ── */
+.notes-btn {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 5px;
+  font-size: 0.63em;
+  cursor: pointer;
+  color: #aaa;
+  transition: border-color 0.15s, color 0.15s;
+  margin-top: 1px;
+  width: 100%;
+  text-align: center;
+  pointer-events: all;
+}
+.notes-btn:hover { border-color: #888; color: #555; }
+.notes-btn.has-note { border-color: var(--accent, #009922); color: var(--accent, #009922); font-weight: 700; }
+
+/* ── NOTES MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+}
+.modal-title {
+  font-size: 1em;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: #111;
+}
+.modal-stars {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.modal-stars .star-lg {
+  font-size: 1.9em;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.1s, transform 0.1s;
+  line-height: 1;
+}
+.modal-stars .star-lg:hover { transform: scale(1.15); }
+.modal-stars .star-lg.filled { color: #009922; }
+.modal-textarea {
+  width: 100%;
+  min-height: 80px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 0.9em;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  margin-bottom: 12px;
+}
+.modal-textarea:focus { border-color: #009922; }
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn-save {
+  background: #009922;
+  color: #fff;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.btn-save:hover { background: #007a1a; }
+.btn-cancel {
+  background: #eee;
+  color: #555;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-weight: 700;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+.btn-cancel:hover { background: #ddd; }
 
 /* ── EMPTY SECTION ── */
 .empty-note {
@@ -216,7 +334,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
   body { padding: 0 !important; background: #fff !important; }
-  .total-bar { display: none !important; }
+  .total-bar, .notes-btn, .modal-overlay { display: none !important; }
 
   header { border-bottom: 2px solid #000; margin-bottom: 12px; }
   .section { margin-bottom: 12px; border: 1px solid #ccc; page-break-inside: avoid; }
@@ -230,6 +348,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   .can-name { font-size: 0.62em; }
   .cb-box { border-color: #222; }
   .can-card.checked .cb-box { color: #000 !important; }
+  .star.filled { color: #000 !important; }
 }
 </style>
 </head>
@@ -250,22 +369,19 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   <div class="section-header">
     <img class="group-logo" src="c591259d-f361-4415-a7cb-f558d09cd41d.webp" alt="">
     <div class="section-title">Monster Energy</div>
-    <div class="section-count" id="cnt-original">0/13</div>
+    <div class="section-count" id="cnt-original">0/10</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="o1" onclick="toggle(this)"><img src="f6dadd8b-12d1-4318-9167-1b83e9caa9c9.webp" alt=""><div class="can-name">Original (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o2" onclick="toggle(this)"><img src="c349088a-8299-4d18-a15c-a5bc13038f3a.webp" alt=""><div class="can-name">Original (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o3" onclick="toggle(this)"><img src="9b828d6d-ceaf-4b3d-8858-e62787de8372.webp" alt=""><div class="can-name">Original Mini (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o4" onclick="toggle(this)"><img src="9f180ff9-4af0-4f17-b0f0-574906dc6189.webp" alt=""><div class="can-name">Zero Sugar</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o5" onclick="toggle(this)"><img src="abaec732-ae43-481b-8942-71bcb2546725.webp" alt=""><div class="can-name">Zero Sugar (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o6" onclick="toggle(this)"><img src="cc9f9f57-967c-4d64-b539-f8bdabdd8f90.webp" alt=""><div class="can-name">Zero Sugar Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o7" onclick="toggle(this)"><img src="064e8dc2-792b-49db-8592-095d2cddecb5.webp" alt=""><div class="can-name">Absolutely Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o8" onclick="toggle(this)"><img src="3f8ba93e-6ec9-4ad5-80a3-49a267008905.webp" alt=""><div class="can-name">Strawberry Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o9" onclick="toggle(this)"><img src="96edacb8-96cf-4dac-ab53-5aa098d020aa.webp" alt=""><div class="can-name">Strawberry Shot Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o10" onclick="toggle(this)"><img src="80f7af64-6bf0-4169-a1b0-25bdbc320368.webp" alt=""><div class="can-name">Electric Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o11" onclick="toggle(this)"><img src="3aa3f7a7-64cb-4eaf-9db0-f7a45354626f.webp" alt=""><div class="can-name">Full Throttle Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o12" onclick="toggle(this)"><img src="637e8b02-7c99-468c-ab65-ab90cbd0ecfb.webp" alt=""><div class="can-name">Lando Norris Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="o13" onclick="toggle(this)"><img src="c6dec565-3e6c-41e3-8a48-93d4809b005a.webp" alt=""><div class="can-name">Nitro Super Dry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o2"><img src="c349088a-8299-4d18-a15c-a5bc13038f3a.webp" alt=""><div class="can-name">Original (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o5"><img src="abaec732-ae43-481b-8942-71bcb2546725.webp" alt=""><div class="can-name">Zero Sugar (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o6"><img src="cc9f9f57-967c-4d64-b539-f8bdabdd8f90.webp" alt=""><div class="can-name">Zero Sugar Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o7"><img src="064e8dc2-792b-49db-8592-095d2cddecb5.webp" alt=""><div class="can-name">Absolutely Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o8"><img src="3f8ba93e-6ec9-4ad5-80a3-49a267008905.webp" alt=""><div class="can-name">Strawberry Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o9"><img src="96edacb8-96cf-4dac-ab53-5aa098d020aa.webp" alt=""><div class="can-name">Strawberry Shot Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o10"><img src="80f7af64-6bf0-4169-a1b0-25bdbc320368.webp" alt=""><div class="can-name">Electric Blue</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o11"><img src="3aa3f7a7-64cb-4eaf-9db0-f7a45354626f.webp" alt=""><div class="can-name">Full Throttle Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o12"><img src="637e8b02-7c99-468c-ab65-ab90cbd0ecfb.webp" alt=""><div class="can-name">Lando Norris Zero</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="o13"><img src="c6dec565-3e6c-41e3-8a48-93d4809b005a.webp" alt=""><div class="can-name">Nitro Super Dry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -278,18 +394,18 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-ultra">0/12</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="u1" onclick="toggle(this)"><img src="3214808a-90a7-474d-9cc5-7f495eae23de.webp" alt=""><div class="can-name">Zero Ultra</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u2" onclick="toggle(this)"><img src="85b0a72e-82af-4b2e-abba-2ddfaa80e919.webp" alt=""><div class="can-name">Ultra (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u3" onclick="toggle(this)"><img src="57063625-73cc-46e3-b44d-d2b271182410.webp" alt=""><div class="can-name">Ultra Violet</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u4" onclick="toggle(this)"><img src="2fe8f57f-685c-498e-8f1a-627aa46cfe48.webp" alt=""><div class="can-name">Ultra Punk Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u5" onclick="toggle(this)"><img src="33fb96c4-82ed-4776-ae04-a521e53cbe3b.webp" alt=""><div class="can-name">Ultra Vice Guava</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u6" onclick="toggle(this)"><img src="60b7e3d6-f887-4a90-a36e-490a6e9c8d40.webp" alt=""><div class="can-name">Ultra Wild Passion</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u7" onclick="toggle(this)"><img src="f3cf4313-fb7c-418b-93ad-b17df387e3f9.webp" alt=""><div class="can-name">Ultra Blue Hawaiian</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u8" onclick="toggle(this)"><img src="b50fd57d-fb73-407c-9451-7e8769ff9d98.webp" alt=""><div class="can-name">Ultra R.W.B. Razz</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u9" onclick="toggle(this)"><img src="a78a390f-cfa2-40d7-9b7e-0923f15200a5.webp" alt=""><div class="can-name">Ultra Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u10" onclick="toggle(this)"><img src="e713f452-63a6-4a6f-9081-8d1c3678016c.webp" alt=""><div class="can-name">Ultra Peachy Keen</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u11" onclick="toggle(this)"><img src="ed90928a-7c0c-456f-80fd-d5c0cda7924c.webp" alt=""><div class="can-name">Ultra Fiesta Mango</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="u12" onclick="toggle(this)"><img src="f6beef27-965c-4235-b48e-45fe1d45ba01.webp" alt=""><div class="can-name">Ultra Strawberry Dreams</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u1"><img src="3214808a-90a7-474d-9cc5-7f495eae23de.webp" alt=""><div class="can-name">Zero Ultra</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u2"><img src="85b0a72e-82af-4b2e-abba-2ddfaa80e919.webp" alt=""><div class="can-name">Ultra (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u3"><img src="57063625-73cc-46e3-b44d-d2b271182410.webp" alt=""><div class="can-name">Ultra Violet</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u4"><img src="2fe8f57f-685c-498e-8f1a-627aa46cfe48.webp" alt=""><div class="can-name">Ultra Punk Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u5"><img src="33fb96c4-82ed-4776-ae04-a521e53cbe3b.webp" alt=""><div class="can-name">Ultra Vice Guava</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u6"><img src="60b7e3d6-f887-4a90-a36e-490a6e9c8d40.webp" alt=""><div class="can-name">Ultra Wild Passion</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u7"><img src="f3cf4313-fb7c-418b-93ad-b17df387e3f9.webp" alt=""><div class="can-name">Ultra Blue Hawaiian</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u8"><img src="b50fd57d-fb73-407c-9451-7e8769ff9d98.webp" alt=""><div class="can-name">Ultra R.W.B. Razz</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u9"><img src="a78a390f-cfa2-40d7-9b7e-0923f15200a5.webp" alt=""><div class="can-name">Ultra Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u10"><img src="e713f452-63a6-4a6f-9081-8d1c3678016c.webp" alt=""><div class="can-name">Ultra Peachy Keen</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u11"><img src="ed90928a-7c0c-456f-80fd-d5c0cda7924c.webp" alt=""><div class="can-name">Ultra Fiesta Mango</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="u12"><img src="f6beef27-965c-4235-b48e-45fe1d45ba01.webp" alt=""><div class="can-name">Ultra Strawberry Dreams</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -299,20 +415,18 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
   <div class="section-header">
     <img class="group-logo" src="b2bc5d78-dcdd-4d4c-92f7-6fe8c3d03d14.webp" alt="">
     <div class="section-title">Juice Monster</div>
-    <div class="section-count" id="cnt-juice">0/11</div>
+    <div class="section-count" id="cnt-juice">0/9</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="j1" onclick="toggle(this)"><img src="00caa0b5-426b-45a7-8e68-a7c7ef46e224.webp" alt=""><div class="can-name">Bad Apple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j2" onclick="toggle(this)"><img src="077196b8-3934-4aca-89c4-4826a4047c7c.webp" alt=""><div class="can-name">Pacific Punch (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j3" onclick="toggle(this)"><img src="dc1852bf-c745-4786-b048-d721401fbc7a.webp" alt=""><div class="can-name">Pacific Punch (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j4" onclick="toggle(this)"><img src="12d06861-08de-4db3-86a3-c64ba1949cac.webp" alt=""><div class="can-name">Strawberry Lemonade</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j5" onclick="toggle(this)"><img src="78a3ede8-6f73-4ffd-9b03-e77990be30b5.webp" alt=""><div class="can-name">Viking Berry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j6" onclick="toggle(this)"><img src="853f2d57-7852-4b73-bc0c-419a5fa9897a.webp" alt=""><div class="can-name">Voodoo Grape</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j7" onclick="toggle(this)"><img src="d9229f7a-7d32-4ad9-8ee8-df40b58cde7b.webp" alt=""><div class="can-name">Mango Loco (US)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j8" onclick="toggle(this)"><img src="c605dea9-8098-48a7-b910-c946f159041a.webp" alt=""><div class="can-name">Mango Loco (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j9" onclick="toggle(this)"><img src="4bb4d416-3bfc-41a0-a773-0cb627ddb357.webp" alt=""><div class="can-name">Pipeline Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j10" onclick="toggle(this)"><img src="a9a42852-2ce8-4da6-9808-9d09dd3b0486.webp" alt=""><div class="can-name">Khaotic</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="j11" onclick="toggle(this)"><img src="8d7ce6c5-0f6f-4c59-9cc1-02be87b7dae6.webp" alt=""><div class="can-name">Rio Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j1"><img src="00caa0b5-426b-45a7-8e68-a7c7ef46e224.webp" alt=""><div class="can-name">Bad Apple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j3"><img src="dc1852bf-c745-4786-b048-d721401fbc7a.webp" alt=""><div class="can-name">Pacific Punch (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j4"><img src="12d06861-08de-4db3-86a3-c64ba1949cac.webp" alt=""><div class="can-name">Strawberry Lemonade</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j5"><img src="78a3ede8-6f73-4ffd-9b03-e77990be30b5.webp" alt=""><div class="can-name">Viking Berry</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j6"><img src="853f2d57-7852-4b73-bc0c-419a5fa9897a.webp" alt=""><div class="can-name">Voodoo Grape</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j8"><img src="c605dea9-8098-48a7-b910-c946f159041a.webp" alt=""><div class="can-name">Mango Loco (BR)</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j9"><img src="4bb4d416-3bfc-41a0-a773-0cb627ddb357.webp" alt=""><div class="can-name">Pipeline Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j10"><img src="a9a42852-2ce8-4da6-9808-9d09dd3b0486.webp" alt=""><div class="can-name">Khaotic</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="j11"><img src="8d7ce6c5-0f6f-4c59-9cc1-02be87b7dae6.webp" alt=""><div class="can-name">Rio Punch</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -325,11 +439,11 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-java">0/5</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="jv1" onclick="toggle(this)"><img src="1ab2af13-698a-4cbd-b066-1b97b0e53370.webp" alt=""><div class="can-name">Mean Bean</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="jv2" onclick="toggle(this)"><img src="6453e22e-627b-4ebc-9c3f-63a46d39d748.webp" alt=""><div class="can-name">Irish Creme</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="jv3" onclick="toggle(this)"><img src="9e69f70f-8efa-4a95-999d-9b6a9b0e37e8.webp" alt=""><div class="can-name">Café Latte</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="jv4" onclick="toggle(this)"><img src="ac2c0d32-97c7-4c48-8cca-269e43f22a42.webp" alt=""><div class="can-name">Salted Caramel</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="jv5" onclick="toggle(this)"><img src="b956c776-0858-4b8f-84e6-93c5c6f18f52.webp" alt=""><div class="can-name">Loca Moca</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv1"><img src="1ab2af13-698a-4cbd-b066-1b97b0e53370.webp" alt=""><div class="can-name">Mean Bean</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv2"><img src="6453e22e-627b-4ebc-9c3f-63a46d39d748.webp" alt=""><div class="can-name">Irish Creme</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv3"><img src="9e69f70f-8efa-4a95-999d-9b6a9b0e37e8.webp" alt=""><div class="can-name">Café Latte</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv4"><img src="ac2c0d32-97c7-4c48-8cca-269e43f22a42.webp" alt=""><div class="can-name">Salted Caramel</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="jv5"><img src="b956c776-0858-4b8f-84e6-93c5c6f18f52.webp" alt=""><div class="can-name">Loca Moca</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -342,7 +456,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-killer">0/1</div>
   </div>
   <div class="cans-grid" style="grid-template-columns: repeat(auto-fill, minmax(108px, 160px));">
-    <div class="can-card" data-id="kb1" onclick="toggle(this)"><img src="4a1b2252-4a4c-4ab5-9f66-f7e50fb2b68f.webp" alt=""><div class="can-name">Loca Moca Triple Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="kb1"><img src="4a1b2252-4a4c-4ab5-9f66-f7e50fb2b68f.webp" alt=""><div class="can-name">Loca Moca Triple Shot</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -355,9 +469,9 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-reserve">0/3</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="r1" onclick="toggle(this)"><img src="1ee44bba-ddba-4746-8853-47904a1244e3.webp" alt=""><div class="can-name">White Pineapple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="r2" onclick="toggle(this)"><img src="1f958231-848d-47b9-bc1a-07ec623d3046.webp" alt=""><div class="can-name">Orange Dreamsicle</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="r3" onclick="toggle(this)"><img src="8f574bbc-94d9-4dc5-a672-9ccfadb1cb14.webp" alt=""><div class="can-name">Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="r1"><img src="1ee44bba-ddba-4746-8853-47904a1244e3.webp" alt=""><div class="can-name">White Pineapple</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="r2"><img src="1f958231-848d-47b9-bc1a-07ec623d3046.webp" alt=""><div class="can-name">Orange Dreamsicle</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="r3"><img src="8f574bbc-94d9-4dc5-a672-9ccfadb1cb14.webp" alt=""><div class="can-name">Watermelon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -370,8 +484,8 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-dragon">0/2</div>
   </div>
   <div class="cans-grid">
-    <div class="can-card" data-id="dt1" onclick="toggle(this)"><img src="57464a16-b793-403d-8c6d-0f50dfeb2c47.webp" alt=""><div class="can-name">Dragon Peach</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
-    <div class="can-card" data-id="dt2" onclick="toggle(this)"><img src="a1089195-7e2f-4a42-a8de-37586e0333a2.webp" alt=""><div class="can-name">Dragon Lemon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="dt1"><img src="57464a16-b793-403d-8c6d-0f50dfeb2c47.webp" alt=""><div class="can-name">Dragon Peach</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="dt2"><img src="a1089195-7e2f-4a42-a8de-37586e0333a2.webp" alt=""><div class="can-name">Dragon Lemon</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -384,7 +498,7 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
     <div class="section-count" id="cnt-vr46">0/1</div>
   </div>
   <div class="cans-grid" style="grid-template-columns: repeat(auto-fill, minmax(108px, 160px));">
-    <div class="can-card" data-id="vr1" onclick="toggle(this)"><img src="fce2caa1-d334-49a4-9325-257e78484459.webp" alt=""><div class="can-name">The Doctor</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
+    <div class="can-card" data-id="vr1"><img src="fce2caa1-d334-49a4-9325-257e78484459.webp" alt=""><div class="can-name">The Doctor</div><div class="cb-wrap"><div class="cb-box">✓</div><span class="cb-label">Tomei</span></div></div>
   </div>
 </div>
 
@@ -400,10 +514,30 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
 </div>
 
 
+<!-- ══ NOTES MODAL ══ -->
+<div class="modal-overlay" id="notes-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-can-name">Avaliação</div>
+    <div class="modal-stars" id="modal-stars">
+      <span class="star-lg" data-val="1">★</span>
+      <span class="star-lg" data-val="2">★</span>
+      <span class="star-lg" data-val="3">★</span>
+      <span class="star-lg" data-val="4">★</span>
+      <span class="star-lg" data-val="5">★</span>
+    </div>
+    <textarea class="modal-textarea" id="modal-note" placeholder="Escreva suas notas sobre essa lata..."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="modal-cancel">Cancelar</button>
+      <button class="btn-save" id="modal-save">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- ══ TOTAL BAR ══ -->
 <div class="total-bar">
   <div class="total-label">Total</div>
-  <div class="total-numbers" id="total-display">0 / 48</div>
+  <div class="total-numbers" id="total-display">0 / 43</div>
   <div class="progress-outer">
     <div class="progress-inner" id="prog-bar"></div>
   </div>
@@ -412,45 +546,174 @@ header div p { color: #555; font-size: 0.85em; margin-top: 3px; letter-spacing: 
 
 
 <script>
-const TOTAL = 48;
-const KEY = 'monster_v2';
+const TOTAL = 43;
+const KEY = 'monster_v3';
 
+// Each group uses an exact prefix regex so 'j' doesn't bleed into 'jv'
 const groups = [
-  { prefix: 'o',   total: 13, id: 'cnt-original' },
-  { prefix: 'u',   total: 12, id: 'cnt-ultra'    },
-  { prefix: 'j',   total: 11, id: 'cnt-juice'    },
-  { prefix: 'jv',  total: 5,  id: 'cnt-java'     },
-  { prefix: 'kb',  total: 1,  id: 'cnt-killer'   },
-  { prefix: 'r',   total: 3,  id: 'cnt-reserve'  },
-  { prefix: 'dt',  total: 2,  id: 'cnt-dragon'   },
-  { prefix: 'vr',  total: 1,  id: 'cnt-vr46'     },
+  { regex: /^o\d+$/,  total: 10, id: 'cnt-original' },
+  { regex: /^u\d+$/,  total: 12, id: 'cnt-ultra'    },
+  { regex: /^j\d+$/,  total: 9,  id: 'cnt-juice'    },
+  { regex: /^jv\d+$/, total: 5,  id: 'cnt-java'     },
+  { regex: /^kb\d+$/, total: 1,  id: 'cnt-killer'   },
+  { regex: /^r\d+$/,  total: 3,  id: 'cnt-reserve'  },
+  { regex: /^dt\d+$/, total: 2,  id: 'cnt-dragon'   },
+  { regex: /^vr\d+$/, total: 1,  id: 'cnt-vr46'     },
 ];
 
+// ─── STATE ───────────────────────────────────────────
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
 }
 function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
 
-function toggle(card) {
-  const id = card.dataset.id;
+function getEntry(id) {
   const s = load();
-  if (card.classList.contains('checked')) {
-    card.classList.remove('checked');
-    delete s[id];
-  } else {
-    card.classList.add('checked');
-    s[id] = true;
-  }
+  const raw = s[id];
+  if (!raw) return { checked: false, stars: 0, note: '' };
+  if (typeof raw === 'boolean') return { checked: raw, stars: 0, note: '' };
+  return { checked: false, stars: 0, note: '', ...raw };
+}
+function setEntry(id, patch) {
+  const s = load();
+  const cur = getEntry(id);
+  s[id] = { ...cur, ...patch };
   save(s);
+}
+
+// ─── TOGGLE CHECKED ──────────────────────────────────
+function toggleCard(card) {
+  const id = card.dataset.id;
+  const entry = getEntry(id);
+  const next = !entry.checked;
+  setEntry(id, { checked: next });
+  card.classList.toggle('checked', next);
   updateAll();
 }
 
+// ─── STARS ───────────────────────────────────────────
+function renderStars(wrap, val) {
+  wrap.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('filled', +s.dataset.val <= val);
+  });
+}
+
+function buildStarWrap(id) {
+  const wrap = document.createElement('div');
+  wrap.className = 'star-wrap';
+  const entry = getEntry(id);
+  for (let i = 1; i <= 5; i++) {
+    const s = document.createElement('span');
+    s.className = 'star' + (i <= entry.stars ? ' filled' : '');
+    s.dataset.val = i;
+    s.textContent = '★';
+    s.addEventListener('click', e => {
+      e.stopPropagation();
+      const cur = getEntry(id).stars;
+      const next = cur === i ? 0 : i;
+      setEntry(id, { stars: next });
+      renderStars(wrap, next);
+      // sync modal if open for same card
+      if (currentModalId === id) {
+        currentModalStars = next;
+        syncModalStars();
+      }
+    });
+    wrap.appendChild(s);
+  }
+  return wrap;
+}
+
+// ─── NOTES MODAL ─────────────────────────────────────
+let currentModalId = null;
+let currentModalStars = 0;
+
+function syncModalStars() {
+  document.querySelectorAll('#modal-stars .star-lg').forEach(s => {
+    s.classList.toggle('filled', +s.dataset.val <= currentModalStars);
+  });
+}
+
+function openNotes(id, canName) {
+  currentModalId = id;
+  const entry = getEntry(id);
+  currentModalStars = entry.stars || 0;
+  document.getElementById('modal-can-name').textContent = canName;
+  document.getElementById('modal-note').value = entry.note || '';
+  syncModalStars();
+  document.getElementById('notes-modal').classList.add('open');
+}
+
+function closeNotes() {
+  document.getElementById('notes-modal').classList.remove('open');
+  currentModalId = null;
+}
+
+document.getElementById('modal-cancel').addEventListener('click', closeNotes);
+document.getElementById('notes-modal').addEventListener('click', e => {
+  if (e.target.id === 'notes-modal') closeNotes();
+});
+
+document.querySelectorAll('#modal-stars .star-lg').forEach(s => {
+  s.addEventListener('click', () => {
+    const val = +s.dataset.val;
+    currentModalStars = currentModalStars === val ? 0 : val;
+    syncModalStars();
+  });
+});
+
+document.getElementById('modal-save').addEventListener('click', () => {
+  if (!currentModalId) return;
+  const note = document.getElementById('modal-note').value.trim();
+  setEntry(currentModalId, { stars: currentModalStars, note });
+
+  // Refresh card
+  const card = document.querySelector(`[data-id="${currentModalId}"]`);
+  if (card) {
+    const wrap = card.querySelector('.star-wrap');
+    if (wrap) renderStars(wrap, currentModalStars);
+    const btn = card.querySelector('.notes-btn');
+    if (btn) {
+      btn.classList.toggle('has-note', note.length > 0);
+      btn.textContent = note ? '📝 Notas' : '📝 Adicionar nota';
+    }
+  }
+  closeNotes();
+});
+
+// ─── BUILD CARDS ─────────────────────────────────────
+document.querySelectorAll('.can-card').forEach(card => {
+  const id = card.dataset.id;
+  const canName = card.querySelector('.can-name').textContent.trim();
+  const entry = getEntry(id);
+
+  // Insert stars before cb-wrap
+  const cbWrap = card.querySelector('.cb-wrap');
+  const starWrap = buildStarWrap(id);
+  card.insertBefore(starWrap, cbWrap);
+
+  // Append notes button
+  const btn = document.createElement('button');
+  btn.className = 'notes-btn' + (entry.note ? ' has-note' : '');
+  btn.textContent = entry.note ? '📝 Notas' : '📝 Adicionar nota';
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    openNotes(id, canName);
+  });
+  card.appendChild(btn);
+
+  // Card click = toggle
+  card.addEventListener('click', () => toggleCard(card));
+});
+
+// ─── COUNTERS ────────────────────────────────────────
 function updateAll() {
   let total = 0;
+  const allCards = document.querySelectorAll('.can-card');
   groups.forEach(g => {
     let c = 0;
-    document.querySelectorAll(`[data-id^="${g.prefix}"]`).forEach(el => {
-      if (el.classList.contains('checked')) c++;
+    allCards.forEach(el => {
+      if (g.regex.test(el.dataset.id) && el.classList.contains('checked')) c++;
     });
     const el = document.getElementById(g.id);
     if (el) el.textContent = `${c}/${g.total}`;
@@ -460,12 +723,21 @@ function updateAll() {
   document.getElementById('prog-bar').style.width = `${(total / TOTAL) * 100}%`;
 }
 
-// Restore state
+// ─── INIT ─────────────────────────────────────────────
 (function init() {
   const s = load();
   Object.keys(s).forEach(id => {
-    const el = document.querySelector(`[data-id="${id}"]`);
-    if (el) el.classList.add('checked');
+    const card = document.querySelector(`[data-id="${id}"]`);
+    if (!card) return;
+    const entry = getEntry(id);
+    if (entry.checked) card.classList.add('checked');
+    const wrap = card.querySelector('.star-wrap');
+    if (wrap && entry.stars) renderStars(wrap, entry.stars);
+    const btn = card.querySelector('.notes-btn');
+    if (btn && entry.note) {
+      btn.classList.add('has-note');
+      btn.textContent = '📝 Notas';
+    }
   });
   updateAll();
 })();
